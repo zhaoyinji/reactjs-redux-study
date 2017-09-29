@@ -30,15 +30,26 @@
 
 // render(<App />, window.document.getElementById('app'));
 
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
-const reducer = (state, action) => {
+const mathReducer = (state = {
+    result: 1,
+    lastValues: []
+}, action) => {
     switch (action.type) {
         case "ADD":
-            state = state + action.payload;
+            state = {
+                ...state,
+                result: state.result + action.payload,
+                lastValues: [...state.lastValues, action.payload]
+            };
             break;
         case "SUBTRACT":
-            state = state - action.payload;
+        state = {
+            ...state,
+            result: state.result - action.payload,
+            lastValues: [...state.lastValues, action.payload]
+        };
             break;
         default:
             break;
@@ -46,7 +57,32 @@ const reducer = (state, action) => {
     return state;
 };
 
-const store = createStore(reducer, 1);
+const userReducer = (state = {
+    name: 'Zhao',
+    age: 34
+}, action) => {
+    switch (action.type) {
+        case "SET_NAME":
+            state = {
+                ...state,
+                name: action.payload
+            };
+            break;
+        case "SET_AGE":
+        state = {
+            ...state,
+            age: action.payload
+        };
+            break;
+        default:
+            break;
+    }
+    return state;
+};
+
+const store = createStore(combineReducers({
+    mathReducer, userReducer
+}));
 
 store.subscribe(() => {
     console.log('Store updated!', store.getState());
@@ -65,4 +101,14 @@ store.dispatch({
 store.dispatch({
     type: 'SUBTRACT',
     payload: 8
+});
+
+store.dispatch({
+    type: 'SET_NAME',
+    payload: 'Zhao Yinji'
+});
+
+store.dispatch({
+    type: 'SET_AGE',
+    payload: 9999
 });
