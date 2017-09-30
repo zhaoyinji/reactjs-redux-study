@@ -5,7 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import { Provider } from 'react-redux';
 
-import App from './components/App';
+import App from './containers/App';
 
 const mathReducer = (state = {
     result: 1,
